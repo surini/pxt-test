@@ -14,7 +14,7 @@ MicroSeconds
 }
 
 
-//% weight=10 color=#008B00 icon="\uf136" block="maqueen"
+//% weight=10 color=#bc0e0b icon="\uf136" block="PalmBot"
 namespace maqueen{
   
     export class Packeta {
