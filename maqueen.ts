@@ -15,7 +15,7 @@ MicroSeconds
 
 
 //% weight=10 color=#bc0e0b icon="\uf288" block="PalmBot"
-namespace maqueen{
+namespace pbShield{
   
     export class Packeta {
         public mye: string;
@@ -74,40 +74,10 @@ namespace maqueen{
         if(alreadyInit==1){
             return
         }
-        initIR(Pins.P16)
         alreadyInit=1
     }
   
-    //% weight=62
-    //% blockGap=50
-    //% mutate=objectdestructuring
-    //% mutateText=Packeta
-    //% mutateDefaults="myparam:message"
-    //% blockId=IR_callbackUser block="on obloq received"
-    export function IR_callbackUser(maqueencb: (packet: Packeta) => void) {
-        maqueenInit()
-        IR_callback(() => {
-            const packet = new Packeta();
-            packet.mye = maqueene;
-            maqueenparam=getParam();
-            packet.myparam = maqueenparam;
-            maqueencb(packet)
-        });
-    }
-    
-    //% weight=10
-    //% blockId=IR_read block="read IR"
-    export function IR_read():number{
-        maqueenInit()
-        return getParam()
-    }
-    
-   
-    function IR_callback(a: Action): void{
-        maqueencb=a
-        IrPressEvent+=1
-        onPressEvent(IrPressEvent,maqueencb)
-    }
+
     
     //% blockId=ultrasonic_sensor block="sensor unit|%unit"
     //% weight=95
@@ -136,7 +106,7 @@ namespace maqueen{
     }
     
     //% weight=90
-    //% blockId=motor_MotorRun block="Run|%direction|speed|%speed"
+    //% blockId=motor_MotorRun block="Run|%direction|with power|%speed"
     //% speed.min=0 speed.max=255
     //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=2
     export function MotorRun(direction:Dir, speed: number): void {
@@ -150,7 +120,7 @@ namespace maqueen{
 
     
     //% weight=85
-    //% blockId=motor_MotorSet block="Set|%index|'s power|%speed"
+    //% blockId=motor_MotorSet block="Set|%index|motor's power|%speed"
     //% speed.min=-255 speed.max=255
     //% index.fieldEditor="gridpicker" index.fieldOptions.columns=2
     export function MotorSet(index: aMotors, speed: number): void {
