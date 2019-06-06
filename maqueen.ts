@@ -136,11 +136,11 @@ namespace maqueen{
     }
     
     //% weight=90
-    //% blockId=motor_MotorRun block="Motor|%index|dir|%Dir|speed|%speed"
-    //% speed.min=0 speed.max=255
+    //% blockId=motor_MotorRun block="Motor|%index|speed|%speed"
+    //% speed.min=-255 speed.max=255
     //% index.fieldEditor="gridpicker" index.fieldOptions.columns=2
     //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=2
-    export function MotorRun(index: aMotors, direction:Dir, speed: number): void {
+    export function MotorRun(index: aMotors, speed: number): void {
         let buf = pins.createBuffer(3);
         if (index==0){
             buf[0]=0x00;
@@ -148,7 +148,7 @@ namespace maqueen{
         if (index==1){
             buf[0]=0x02;
         }
-        buf[1]=direction;
+        //buf[1]=direction;
         buf[2]=speed;
         pins.i2cWriteBuffer(0x10, buf);
     }
@@ -170,8 +170,8 @@ namespace maqueen{
     }
     
     //% weight=10
-    //% blockId=motor_motorStopAll block="Motor Stop All"
-    export function motorStopAll(): void {
+    //% blockId=motor_stopMoving block="Stop Moving"
+    export function stopMoving(): void {
         let buf = pins.createBuffer(3);
         buf[0]=0x00;
         buf[1]=0;
