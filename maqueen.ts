@@ -30,10 +30,10 @@ namespace maqueen{
     }
     
     export enum Dir{
-        //% blockId="RUN_FORWARD" block="RUN_FORWARD"
-        RUN_FORWARD = 0x0,
-        //% blockId="RUN_BACKWARD" block="RUN_BACKWARD"
-        RUN_BACKWARD = 0x1
+        //% blockId="FORWARD" block="FORWARD"
+        FORWARD = 0x0,
+        //% blockId="BACKWARD" block="BACKWARD"
+        BACKWARD = 0x1
     }
     
     export enum Patrol{
