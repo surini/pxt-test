@@ -30,10 +30,10 @@ namespace maqueen{
     }
     
     export enum Dir{
-        //% blockId="FORWARD" block="FORWARD"
-        FORWARD = 0x0,
-        //% blockId="BACKWARD" block="BACKWARD"
-        BACKWARD = 0x1
+        //% blockId="CW" block="CW"
+        CW = 0x0,
+        //% blockId="CCW" block="CCW"
+        CCW = 0x1
     }
     
     export enum Patrol{
@@ -141,12 +141,7 @@ namespace maqueen{
     //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=2
     export function MotorRun(direction:Dir, speed: number): void {
         let buf = pins.createBuffer(3);
-        if (index==0){
-            buf[0]=0x00;
-        }
-        if (index==1){
-            buf[0]=0x02;
-        }
+       
         buf[1]=direction;
         buf[2]=speed;
         pins.i2cWriteBuffer(0x10, buf);
