@@ -30,10 +30,10 @@ namespace maqueen{
     }
     
     export enum Dir{
-        //% blockId="CW" block="CW"
-        CW = 0x0,
-        //% blockId="CCW" block="CCW"
-        CCW = 0x1
+        //% blockId="RUN_FORWARD" block="RUN_FORWARD"
+        RUN_FORWARD = 0x0,
+        //% blockId="RUN_BACKWARD" block="RUN_BACKWARD"
+        RUN_BACKWARD = 0x1
     }
     
     export enum Patrol{
@@ -136,7 +136,7 @@ namespace maqueen{
     }
     
     //% weight=90
-    //% blockId=motor_MotorRun block="Move|%index|dir|%Dir|speed|%speed"
+    //% blockId=motor_MotorRun block="Motor|%index|dir|%Dir|speed|%speed"
     //% speed.min=-255 speed.max=255
     //% index.fieldEditor="gridpicker" index.fieldOptions.columns=2
     //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=2
