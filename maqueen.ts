@@ -30,9 +30,9 @@ namespace maqueen{
     }
     
     export enum Dir{
-        //% blockId="FORWARD" block="FORWARD"
+        //% blockId="FORWARD" block="Forward"
         FORWARD = 0x0,
-        //% blockId="BACKWARD" block="BACKWARD"
+        //% blockId="BACKWARD" block="Backward"
         BACKWARD = 0x1
     }
     
@@ -140,6 +140,36 @@ namespace maqueen{
     //% speed.min=0 speed.max=255
     //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=2
     export function MotorRun(direction:Dir, speed: number): void {
+        let buf = pins.createBuffer(3);
+        
+        buf[0]=0x00;
+        buf[1]=direction;
+        buf[2]=speed;
+        pins.i2cWriteBuffer(0x10, buf);
+    }
+
+    
+    //% weight=85
+    //% blockId=motor_MotorSet block="Set|%index|'s power|%speed"
+    //% speed.min=-255 speed.max=255
+    //% index.fieldEditor="gridpicker" index.fieldOptions.columns=2
+    export function MotorSet(index: aMotors, speed: number): void {
+        let buf = pins.createBuffer(3);
+        if (index==0){
+            buf[0]=0x00;
+        }
+        if (index==1){
+            buf[0]=0x02;
+        }
+        
+        buf[2]=speed;
+        pins.i2cWriteBuffer(0x10, buf);
+    }
+
+    //% weight=80
+    //% blockId=motor_MotorTurn block="Turn|%direction"
+    //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=2
+    export function MotorTurn(direction:Dir): void {
         let buf = pins.createBuffer(3);
         
         buf[0]=0x00;
