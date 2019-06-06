@@ -23,17 +23,21 @@ namespace maqueen{
     }
     
     export enum aMotors{
-        //% blockId="M1" block="M1"
-        M1=0,
-        //% blockId="M2" block="M2"
-        M2=1
+        //% blockId="LEFT" block="Left"
+        LEFT=0,
+        //% blockId="RIGHT" block="Right"
+        RIGHT=1
     }
     
     export enum Dir{
-        //% blockId="CW" block="CW"
-        CW = 0x0,
-        //% blockId="CCW" block="CCW"
-        CCW = 0x1
+        //% blockId="RUN_FORWARD" block="Run Forward"
+        RUN_FORWARD = 0x0,
+        //% blockId="RUN_BACKWARD" block="Run Backward"
+        RUN_BACKWARD = 0x1,
+        //% blockId="TURN_RIGHT" block="Turn Right"
+        TURN_RIGHT = 0x2,
+        //% blockId="TURN_LEFT" block="Turn Left"
+        TURN_LEFT = 0x3
     }
     
     export enum Patrol{
@@ -136,19 +140,14 @@ namespace maqueen{
     }
     
     //% weight=90
-    //% blockId=motor_MotorRun block="Motor|%index|speed|%speed"
+    //% blockId=motor_MotorRun block="|%Dir|power|%speed"
     //% speed.min=-255 speed.max=255
     //% index.fieldEditor="gridpicker" index.fieldOptions.columns=2
     //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=2
-    export function MotorRun(index: aMotors, speed: number): void {
+    export function MotorRun(direction:Dir, speed: number): void {
         let buf = pins.createBuffer(3);
-        if (index==0){
-            buf[0]=0x00;
-        }
-        if (index==1){
-            buf[0]=0x02;
-        }
-        //buf[1]=direction;
+        
+        buf[1]=direction;
         buf[2]=speed;
         pins.i2cWriteBuffer(0x10, buf);
     }
