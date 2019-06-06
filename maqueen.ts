@@ -30,10 +30,10 @@ namespace maqueen{
     }
     
     export enum Dir{
-        //% blockId="CW" block="CW"
-        CW = 0x0,
-        //% blockId="CCW" block="CCW"
-        CCW = 0x1
+        //% blockId="FORWARD" block="FORWARD"
+        FORWARD = 0x0,
+        //% blockId="BACKWARD" block="BACKWARD"
+        BACKWARD = 0x1
     }
     
     export enum Patrol{
