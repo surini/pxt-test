@@ -152,7 +152,7 @@ namespace pbShield{
     //% weight=20
     //% blockId=writeLED block="turn on board LED|%ledswitch"
     //% ledswitch.fieldEditor="gridpicker" ledswitch.fieldOptions.columns=2
-    export function writeLED(led: pos, ledswitch: state): void{
+    export function writeLED(ledswitch: state): void{
         pins.digitalWritePin(DigitalPin.P13, ledswitch) 
     }
     
