@@ -16,8 +16,13 @@ MicroSeconds
 
 //% weight=10 color=#bc0e0b icon="\uf288" block="PalmBot"
 namespace pbShield{
+  
+    export class Packeta {
+        public mye: string;
+        public myparam: number;
+    }
     
-    export enum pos{
+    export enum aMotors{
         //% blockId="LEFT" block="Left"
         LEFT=0,
         //% blockId="RIGHT" block="Right"
@@ -38,14 +43,32 @@ namespace pbShield{
         PatrolRight=14
     }
     
-    export enum state{
-        //% blockId="On" block="On"
-        On=0x01,
-        //% blockId="Off" block="Off"
-        Off=0x00
+    export enum LED{
+        //% blockId="LEDLeft" block="LEDLeft"
+        LEDLeft=8,
+        //% blockId="LEDRight" block="LEDRight"
+        LEDRight=12
+    }
+    
+    export enum LEDswitch{
+        //% blockId="turnOn" block="turnOn"
+        turnOn=0x01,
+        //% blockId="turnOff" block="turnOff"
+        turnOff=0x00
     }
 
-   
+    //% advanced=true shim=maqueenIR::initIR
+    function initIR(pin: Pins):void{
+        return
+    }
+    //% advanced=true shim=maqueenIR::onPressEvent
+    function onPressEvent(btn: RemoteButton,body: Action):void{
+        return
+    }
+    //% advanced=true shim=maqueenIR::getParam
+    function getParam():number {
+        return 0
+    }
     
     function maqueenInit():void{
         if(alreadyInit==1){
@@ -100,7 +123,7 @@ namespace pbShield{
     //% blockId=motor_MotorSet block="Set|%index|motor's power|%speed"
     //% speed.min=-255 speed.max=255
     //% index.fieldEditor="gridpicker" index.fieldOptions.columns=2
-    export function MotorSet(index: pos, speed: number): void {
+    export function MotorSet(index: aMotors, speed: number): void {
         let buf = pins.createBuffer(3);
         if (index==0){
             buf[0]=0x00;
@@ -116,11 +139,12 @@ namespace pbShield{
     //% weight=80
     //% blockId=motor_MotorTurn block="Turn|%side"
     //% side.fieldEditor="gridpicker" side.fieldOptions.columns=2
-    export function MotorTurn(side: pos): void {
+    export function MotorTurn(side:aMotors): void {
         let buf = pins.createBuffer(3);
         
         buf[0]=0x00;
         buf[1]=side;
+        buf[2]=speed;
         pins.i2cWriteBuffer(0x10, buf);
     }
     
@@ -150,10 +174,17 @@ namespace pbShield{
     }
     
     //% weight=20
-    //% blockId=writeLED block="turn on board LED|%ledswitch"
+    //% blockId=writeLED block="led|%led|ledswitch|%ledswitch"
+    //% led.fieldEditor="gridpicker" led.fieldOptions.columns=2 
     //% ledswitch.fieldEditor="gridpicker" ledswitch.fieldOptions.columns=2
-    export function writeLED(ledswitch: state): void{
-        pins.digitalWritePin(DigitalPin.P13, ledswitch) 
+    export function writeLED(led:LED, ledswitch:LEDswitch):void{
+        if(led==LED.LEDLeft){
+            pins.digitalWritePin(DigitalPin.P8, ledswitch)
+        }else if(led==LED.LEDRight){
+            pins.digitalWritePin(DigitalPin.P12, ledswitch)
+        }else{
+            return
+        } 
     }
     
 
