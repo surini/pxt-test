@@ -28,13 +28,13 @@ namespace pbShield{
     //% weight=95
     export function sensor(): number {
         // send pulse
-        pins.setPull(DigitalPin.P1, PinPullMode.PullNone);
-        pins.digitalWritePin(DigitalPin.P9, 0);
-        control.waitMicros(2);
-        pins.digitalWritePin(DigitalPin.P9, 1);
-        control.waitMicros(10);
-        pins.digitalWritePin(DigitalPin.P9, 0);
-        pins.setPull(DigitalPin.P10, PinPullMode.PullUp);
+        pins.setPull(DigitalPin.P1, PinPullMode.PullNone)
+        pins.digitalWritePin(DigitalPin.P9, 0)
+        control.waitMicros(2)
+        pins.digitalWritePin(DigitalPin.P9, 1)
+        control.waitMicros(10)
+        pins.digitalWritePin(DigitalPin.P9, 0)
+        pins.setPull(DigitalPin.P10, PinPullMode.PullUp)
         
         
 

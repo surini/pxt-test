@@ -1,21 +1,13 @@
 {
     "name": "PalmBot",
     "version": "0.0.1",
-    "description": "Affordable mini robot designed by ThePalmLabs",
+    "description": "Designed by ThePalm Labs",
     "license": "MIT",
     "dependencies": {
         "core": "*"
     },
     "files": [
-        "maqueen.ts",
-        "enums.d.ts",
-        "maqueenIR.cpp",
-        "ReceiverIR.cpp",
-        "ReceiverIR.h",
-        "RemoteIR.h",
-        "TransmitterIR.cpp",
-        "TransmitterIR.h",
-        "_locales/zh/maqueen-strings.json"
+        "pbShield.ts"
     ],
     "testFiles": [
         "tests.ts"
