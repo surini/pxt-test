@@ -141,16 +141,7 @@ namespace pbShield{
         pins.digitalWritePin(DigitalPin.P5, state.Off)
         pins.digitalWritePin(DigitalPin.P6, state.Off)
     
-        if (index == pos.LEFT)
-        {
-            pins.analogWritePin(AnalogPin.P2, 255)
-        }
-        else
-        {
-            pins.analogWritePin(AnalogPin.P4, 255)
-        }
-
-        basic.pause(200)
+       
         pins.digitalWritePin(DigitalPin.P2, state.Off)
         pins.digitalWritePin(DigitalPin.P4, state.Off)
     }
