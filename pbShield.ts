@@ -56,7 +56,7 @@ namespace pbShield{
   
 
     
-    //% blockId=ultrasonic_sensor block="sensor unit"
+    //% blockId=ultrasonic_sensor block="ultrasonic sensor distance"
     //% weight=95
     export function sensor(): number {
         // send pulse
@@ -71,7 +71,7 @@ namespace pbShield{
         
 
         // read pulse
-        return pins.pulseIn(DigitalPin.P10, PulseValue.High, 21000) / 42;
+        return pins.pulseIn(DigitalPin.P10, PulseValue.High, 21000) / 42
     }
     
     //% weight=90
@@ -91,68 +91,87 @@ namespace pbShield{
         pins.analogWritePin(AnalogPin.P4, speed)
     }
 
-
     
     //% weight=85
     //% blockId=motor_MotorSet block="Set|%index|motor's power|%speed"
     //% speed.min=-255 speed.max=255
     //% index.fieldEditor="gridpicker" index.fieldOptions.columns=2
     export function MotorSet(index: pos, speed: number): void {
-        let buf = pins.createBuffer(3);
-        if (index==0){
-            buf[0]=0x00;
+       
+        if (index == pos.LEFT)
+        {
+            if (speed >= 0) {
+                pins.digitalWritePin(DigitalPin.P5, state.Off)
+                pins.analogWritePin(AnalogPin.P2, speed)
+            }
+            else
+            {
+                pins.digitalWritePin(DigitalPin.P5, state.On)
+                pins.analogWritePin(AnalogPin.P2, 255-speed)
+            }
+            
         }
-        if (index==1){
-            buf[0]=0x02;
+        else
+        {
+            if (speed >= 0) {
+                pins.digitalWritePin(DigitalPin.P6, state.Off)
+                pins.analogWritePin(AnalogPin.P4, 255)
+            }
+            else
+            {
+                pins.digitalWritePin(DigitalPin.P6, state.On)
+                pins.analogWritePin(AnalogPin.P4, 255-speed)
+            }
+            
         }
+
         
-        buf[2]=speed;
-        pins.i2cWriteBuffer(0x10, buf);
     }
 
     //% weight=80
     //% blockId=motor_MotorTurn block="Turn|%side"
     //% side.fieldEditor="gridpicker" side.fieldOptions.columns=2
     export function MotorTurn(side: pos): void {
-        let buf = pins.createBuffer(3);
-        
-        buf[0]=0x00;
-        buf[1]=side;
-        pins.i2cWriteBuffer(0x10, buf);
+        pins.digitalWritePin(DigitalPin.P2, state.Off)
+        pins.digitalWritePin(DigitalPin.P4, state.Off)
+        pins.digitalWritePin(DigitalPin.P5, state.Off)
+        pins.digitalWritePin(DigitalPin.P6, state.Off)
+    
+        if (index == pos.LEFT)
+        {
+            pins.analogWritePin(AnalogPin.P2, 255)
+        }
+        else
+        {
+            pins.analogWritePin(AnalogPin.P4, 255)
+        }
+
+        basic.pause(200)
+        pins.digitalWritePin(DigitalPin.P2, state.Off)
+        pins.digitalWritePin(DigitalPin.P4, state.Off)
     }
     
     //% weight=10
     //% blockId=motor_stopMoving block="Stop Moving"
     export function stopMoving(): void {
-        let buf = pins.createBuffer(3);
-        buf[0]=0x00;
-        buf[1]=0;
-        buf[2]=0;
-        pins.i2cWriteBuffer(0x10, buf);
-        buf[0]=0x02;
-        pins.i2cWriteBuffer(0x10, buf);
+        pins.digitalWritePin(DigitalPin.P2, state.Off) 
+        pins.digitalWritePin(DigitalPin.P5, state.Off) 
+        pins.digitalWritePin(DigitalPin.P4, state.Off) 
+        pins.digitalWritePin(DigitalPin.P6, state.Off) 
     }
     
     //% weight=20
-    //% blockId=read_Patrol block="Read Patrol|%patrol"
-    //% patrol.fieldEditor="gridpicker" patrol.fieldOptions.columns=2 
-    export function readPatrol(patrol:Patrol):number{
-        if(patrol==Patrol.PatrolLeft){
-            return pins.digitalReadPin(DigitalPin.P13)
-        }else if(patrol==Patrol.PatrolRight){
-            return pins.digitalReadPin(DigitalPin.P14)
-        }else{
-            return -1
-        } 
+    //% blockId=readButton block="On Board Button" 
+    export function readButton():number{
+        return pins.digitalReadPin(DigitalPin.P3)
     }
     
     //% weight=20
-    //% blockId=writeLED block="turn on board LED|%ledswitch"
+    //% blockId=setLED block="Switch on board LED|%ledswitch"
     //% ledswitch.fieldEditor="gridpicker" ledswitch.fieldOptions.columns=2
-    export function writeLED(ledswitch: state): void{
+    export function setLED(ledswitch: state): void{
         pins.digitalWritePin(DigitalPin.P13, ledswitch) 
     }
     
-
   
 }
