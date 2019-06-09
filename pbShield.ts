@@ -70,12 +70,12 @@ namespace pbShield{
         if (index == pos.LEFT)
         {
             if (speed >= 0) {
-                pins.digitalWritePin(DigitalPin.P2, state.Off)
+                //pins.digitalWritePin(DigitalPin.P2, state.Off)
                 //pins.analogWritePin(DigitalPin.P5, speed)
             }
             else
             {
-                pins.digitalWritePin(DigitalPin.P2, state.On)
+                //pins.digitalWritePin(DigitalPin.P2, state.On)
                 //pins.analogWritePin(DigitalPin.P5, 255-speed)
             }
             
@@ -83,12 +83,12 @@ namespace pbShield{
         else
         {
             if (speed >= 0) {
-                pins.digitalWritePin(DigitalPin.P4, state.Off)
+                //pins.digitalWritePin(DigitalPin.P4, state.Off)
                 //pins.analogWritePin(DigitalPin.P6, 255)
             }
             else
             {
-                pins.digitalWritePin(DigitalPin.P4, state.On)
+                //pins.digitalWritePin(DigitalPin.P4, state.On)
                 //pins.analogWritePin(DigitalPin.P6, 255-speed)
             }
             
@@ -101,10 +101,10 @@ namespace pbShield{
     //% blockId=motor_MotorTurn block="Turn|%side"
     //% side.fieldEditor="gridpicker" side.fieldOptions.columns=2
     export function MotorTurn(side: pos): void {
-        pins.digitalWritePin(DigitalPin.P2, state.Off)
-        pins.digitalWritePin(DigitalPin.P4, state.Off)
-        pins.digitalWritePin(DigitalPin.P5, state.Off)
-        pins.digitalWritePin(DigitalPin.P6, state.Off)
+        //pins.digitalWritePin(DigitalPin.P2, state.Off)
+        //pins.digitalWritePin(DigitalPin.P4, state.Off)
+        //pins.digitalWritePin(DigitalPin.P5, state.Off)
+        //pins.digitalWritePin(DigitalPin.P6, state.Off)
     
         if (index == pos.LEFT)
         {
@@ -116,17 +116,17 @@ namespace pbShield{
         }
 
         basic.pause(200)
-        pins.digitalWritePin(DigitalPin.P5, state.Off)
-        pins.digitalWritePin(DigitalPin.P6, state.Off)
+        //pins.digitalWritePin(DigitalPin.P5, state.Off)
+        //pins.digitalWritePin(DigitalPin.P6, state.Off)
     }
     
     //% weight=10
     //% blockId=motor_stopMoving block="Stop Moving"
     export function stopMoving(): void {
-        pins.digitalWritePin(DigitalPin.P2, state.Off) 
-        pins.digitalWritePin(DigitalPin.P5, state.Off) 
-        pins.digitalWritePin(DigitalPin.P4, state.Off) 
-        pins.digitalWritePin(DigitalPin.P6, state.Off) 
+        //pins.digitalWritePin(DigitalPin.P2, state.Off) 
+        //pins.digitalWritePin(DigitalPin.P5, state.Off) 
+        //pins.digitalWritePin(DigitalPin.P4, state.Off) 
+        //pins.digitalWritePin(DigitalPin.P6, state.Off) 
     }
     
     //% weight=20
@@ -139,7 +139,7 @@ namespace pbShield{
     //% blockId=setLED block="Switch on board LED|%ledswitch"
     //% ledswitch.fieldEditor="gridpicker" ledswitch.fieldOptions.columns=2
     export function setLED(ledswitch: state): void{
-        pins.digitalWritePin(DigitalPin.P13, ledswitch) 
+        //pins.digitalWritePin(DigitalPin.P13, ledswitch) 
     }
     
 
