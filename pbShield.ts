@@ -107,7 +107,8 @@ namespace pbShield{
             else
             {
                 pins.digitalWritePin(DigitalPin.P5, state.On)
-                pins.analogWritePin(AnalogPin.P2, 255-speed)
+                speed = 255-speed
+                pins.analogWritePin(AnalogPin.P2, speed)
             }
             
         }
@@ -120,7 +121,8 @@ namespace pbShield{
             else
             {
                 pins.digitalWritePin(DigitalPin.P6, state.On)
-                pins.analogWritePin(AnalogPin.P4, 255-speed)
+                speed = 255-speed
+                pins.analogWritePin(AnalogPin.P4, speed)
             }
             
         }
