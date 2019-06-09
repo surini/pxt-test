@@ -136,11 +136,23 @@ namespace pbShield{
     //% blockId=motor_MotorTurn block="Turn|%side"
     //% side.fieldEditor="gridpicker" side.fieldOptions.columns=2
     export function MotorTurn(side: pos): void {
-        let buf = pins.createBuffer(3);
-        
-        buf[0]=0x00;
-        buf[1]=side;
-        pins.i2cWriteBuffer(0x10, buf);
+        pins.digitalWritePin(DigitalPin.P2, state.Off)
+        pins.digitalWritePin(DigitalPin.P4, state.Off)
+        pins.digitalWritePin(DigitalPin.P5, state.Off)
+        pins.digitalWritePin(DigitalPin.P6, state.Off)
+    
+        if (index == pos.LEFT)
+        {
+            pins.analogWritePin(AnalogPin.P2, 255)
+        }
+        else
+        {
+            pins.analogWritePin(AnalogPin.P4, 255)
+        }
+
+        basic.pause(200)
+        pins.digitalWritePin(DigitalPin.P2, state.Off)
+        pins.digitalWritePin(DigitalPin.P4, state.Off)
     }
     
     //% weight=10
