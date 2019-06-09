@@ -74,7 +74,7 @@ namespace pbShield{
         return pins.pulseIn(DigitalPin.P10, PulseValue.High, 21000) / 42;
     }
     
-     //% weight=90
+    //% weight=90
     //% blockId=motor_MotorRun block="Run|%direction|with power|%speed"
     //% speed.min=0 speed.max=255
     //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=2
@@ -91,41 +91,23 @@ namespace pbShield{
         pins.analogWritePin(DigitalPin.P6, speed)
     }
 
+
     
     //% weight=85
     //% blockId=motor_MotorSet block="Set|%index|motor's power|%speed"
     //% speed.min=-255 speed.max=255
     //% index.fieldEditor="gridpicker" index.fieldOptions.columns=2
     export function MotorSet(index: pos, speed: number): void {
-       
-        if (index == pos.LEFT)
-        {
-            if (speed >= 0) {
-                pins.digitalWritePin(DigitalPin.P2, state.Off)
-                pins.analogWritePin(DigitalPin.P5, speed)
-            }
-            else
-            {
-                pins.digitalWritePin(DigitalPin.P2, state.On)
-                pins.analogWritePin(DigitalPin.P5, 255-speed)
-            }
-            
+        let buf = pins.createBuffer(3);
+        if (index==0){
+            buf[0]=0x00;
         }
-        else
-        {
-            if (speed >= 0) {
-                pins.digitalWritePin(DigitalPin.P4, state.Off)
-                pins.analogWritePin(DigitalPin.P6, 255)
-            }
-            else
-            {
-                pins.digitalWritePin(DigitalPin.P4, state.On)
-                pins.analogWritePin(DigitalPin.P6, 255-speed)
-            }
-            
+        if (index==1){
+            buf[0]=0x02;
         }
-
         
+        buf[2]=speed;
+        pins.i2cWriteBuffer(0x10, buf);
     }
 
     //% weight=80
