@@ -12,5 +12,10 @@
     "testFiles": [
         "tests.ts"
     ],
-    "public": true
+    "public": true,
+    "extension": {
+        "namespace": "pbShield",
+        "label": "Animation Editor",
+        "localUrl": "http://127.0.0.1:8080/index.html?d"
+    }
 }
