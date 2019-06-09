@@ -49,7 +49,7 @@
     }
     
 
-declare namespace maqueenIR {
+declare namespace pbShield {
 }
 
 // Auto-generated. Do not edit. Really.
