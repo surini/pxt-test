@@ -82,7 +82,11 @@ namespace pbShield{
 
         pins.digitalWritePin(DigitalPin.P5, direction)
         pins.digitalWritePin(DigitalPin.P6, direction)
-        
+        speed = speed > 245 ? 245:speed
+        if (direction == Dir.FORWARD)
+        {
+            speed = 255-speed
+        }
         pins.analogWritePin(AnalogPin.P2, speed)
         pins.analogWritePin(AnalogPin.P4, speed)
     }
