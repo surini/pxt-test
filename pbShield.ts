@@ -74,17 +74,21 @@ namespace pbShield{
         return pins.pulseIn(DigitalPin.P10, PulseValue.High, 21000) / 42;
     }
     
-    //% weight=90
+     //% weight=90
     //% blockId=motor_MotorRun block="Run|%direction|with power|%speed"
     //% speed.min=0 speed.max=255
     //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=2
     export function MotorRun(direction:Dir, speed: number): void {
-        let buf = pins.createBuffer(3);
-        
-        buf[0]=0x00;
-        buf[1]=direction;
-        buf[2]=speed;
-        pins.i2cWriteBuffer(0x10, buf);
+
+        pins.digitalWritePin(DigitalPin.P2, direction)
+        pins.digitalWritePin(DigitalPin.P4, direction)
+        speed = speed > 245 ? 245:speed
+        if (direction == Dir.FORWARD)
+        {
+            speed = 255-speed
+        }
+        pins.analogWritePin(DigitalPin.P5, speed)
+        pins.analogWritePin(DigitalPin.P6, speed)
     }
 
     
@@ -93,16 +97,35 @@ namespace pbShield{
     //% speed.min=-255 speed.max=255
     //% index.fieldEditor="gridpicker" index.fieldOptions.columns=2
     export function MotorSet(index: pos, speed: number): void {
-        let buf = pins.createBuffer(3);
-        if (index==0){
-            buf[0]=0x00;
+       
+        if (index == pos.LEFT)
+        {
+            if (speed >= 0) {
+                pins.digitalWritePin(DigitalPin.P2, state.Off)
+                pins.analogWritePin(DigitalPin.P5, speed)
+            }
+            else
+            {
+                pins.digitalWritePin(DigitalPin.P2, state.On)
+                pins.analogWritePin(DigitalPin.P5, 255-speed)
+            }
+            
         }
-        if (index==1){
-            buf[0]=0x02;
+        else
+        {
+            if (speed >= 0) {
+                pins.digitalWritePin(DigitalPin.P4, state.Off)
+                pins.analogWritePin(DigitalPin.P6, 255)
+            }
+            else
+            {
+                pins.digitalWritePin(DigitalPin.P4, state.On)
+                pins.analogWritePin(DigitalPin.P6, 255-speed)
+            }
+            
         }
+
         
-        buf[2]=speed;
-        pins.i2cWriteBuffer(0x10, buf);
     }
 
     //% weight=80
