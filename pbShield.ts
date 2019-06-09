@@ -80,11 +80,11 @@ namespace pbShield{
     //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=2
     export function MotorRun(direction:Dir, speed: number): void {
 
-        pins.digitalWritePin(DigitalPin.P2, direction)
-        pins.digitalWritePin(DigitalPin.P4, direction)
+        pins.digitalWritePin(DigitalPin.P5, direction)
+        pins.digitalWritePin(DigitalPin.P6, direction)
         
-        pins.analogWritePin(DigitalPin.P5, speed)
-        pins.analogWritePin(DigitalPin.P6, speed)
+        pins.analogWritePin(AnalogPin.P2, speed)
+        pins.analogWritePin(AnalogPin.P4, speed)
     }
 
 
