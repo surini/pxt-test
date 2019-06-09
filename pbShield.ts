@@ -39,7 +39,7 @@ namespace pbShield{
         
 
         // read pulse
-        return pins.pulseIn(DigitalPin.P10, PulseValue.High, 21000) / 42;
+        return pins.pulseIn(DigitalPin.P10, PulseValue.High, 21000) / 42
     }
     
     //% weight=90
