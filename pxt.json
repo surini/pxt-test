@@ -8,8 +8,7 @@
     },
     "files": [
         "pbShield.ts",
-        "enums.d.ts",
-        "_locales/zh/maqueen-strings.json"
+        "enums.d.ts"
     ],
     "testFiles": [
         "tests.ts"
