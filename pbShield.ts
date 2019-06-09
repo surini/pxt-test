@@ -78,17 +78,10 @@ namespace pbShield{
     //% blockId=motor_MotorRun block="Run|%direction|with power|%speed"
     //% speed.min=0 speed.max=255
     //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=2
-    export function MotorRun(direction:Dir, speed: number): void {
+    export function MotorRun(direction: Dir, speed: number): void {
 
         pins.digitalWritePin(DigitalPin.P2, direction)
         pins.digitalWritePin(DigitalPin.P4, direction)
-        speed = speed > 245 ? 245:speed
-        if (direction == Dir.FORWARD)
-        {
-            speed = 255-speed
-        }
-        pins.analogWritePin(DigitalPin.P5, speed)
-        pins.analogWritePin(DigitalPin.P6, speed)
     }
 
 
