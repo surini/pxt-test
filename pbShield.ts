@@ -39,7 +39,8 @@ namespace pbShield{
         
 
         // read pulse
-        return pins.pulseIn(DigitalPin.P10, PulseValue.High, 21000) / 42
+        //return pins.pulseIn(DigitalPin.P10, PulseValue.High, 21000) / 42
+        return 0
     }
     
     //% weight=90
@@ -50,13 +51,13 @@ namespace pbShield{
 
         pins.digitalWritePin(DigitalPin.P2, direction)
         pins.digitalWritePin(DigitalPin.P4, direction)
-        speed = speed > 245 ? 245:speed
+        //speed = speed > 245 ? 245:speed
         if (direction == Dir.FORWARD)
         {
-            speed = 255-speed
+            //speed = 255-speed
         }
-        pins.analogWritePin(DigitalPin.P5, speed)
-        pins.analogWritePin(DigitalPin.P6, speed)
+        //pins.analogWritePin(DigitalPin.P5, speed)
+        //pins.analogWritePin(DigitalPin.P6, speed)
     }
 
     
@@ -70,12 +71,12 @@ namespace pbShield{
         {
             if (speed >= 0) {
                 pins.digitalWritePin(DigitalPin.P2, state.Off)
-                pins.analogWritePin(DigitalPin.P5, speed)
+                //pins.analogWritePin(DigitalPin.P5, speed)
             }
             else
             {
                 pins.digitalWritePin(DigitalPin.P2, state.On)
-                pins.analogWritePin(DigitalPin.P5, 255-speed)
+                //pins.analogWritePin(DigitalPin.P5, 255-speed)
             }
             
         }
@@ -83,12 +84,12 @@ namespace pbShield{
         {
             if (speed >= 0) {
                 pins.digitalWritePin(DigitalPin.P4, state.Off)
-                pins.analogWritePin(DigitalPin.P6, 255)
+                //pins.analogWritePin(DigitalPin.P6, 255)
             }
             else
             {
                 pins.digitalWritePin(DigitalPin.P4, state.On)
-                pins.analogWritePin(DigitalPin.P6, 255-speed)
+                //pins.analogWritePin(DigitalPin.P6, 255-speed)
             }
             
         }
@@ -107,11 +108,11 @@ namespace pbShield{
     
         if (index == pos.LEFT)
         {
-            pins.analogWritePin(DigitalPin.P5, 255)
+            //pins.analogWritePin(DigitalPin.P5, 255)
         }
         else
         {
-            pins.analogWritePin(DigitalPin.P6, 255)
+            //pins.analogWritePin(DigitalPin.P6, 255)
         }
 
         basic.pause(200)
