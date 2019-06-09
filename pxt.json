@@ -9,12 +9,6 @@
     "files": [
         "pbShield.ts",
         "enums.d.ts",
-        "maqueenIR.cpp",
-        "ReceiverIR.cpp",
-        "ReceiverIR.h",
-        "RemoteIR.h",
-        "TransmitterIR.cpp",
-        "TransmitterIR.h",
         "_locales/zh/maqueen-strings.json"
     ],
     "testFiles": [
