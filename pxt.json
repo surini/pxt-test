@@ -1,21 +1,24 @@
 {
     "name": "PalmBot",
     "version": "0.0.1",
-    "description": "Designed by ThePalm Labs",
+    "description": "Affordable mini robot designed by ThePalmLabs",
     "license": "MIT",
     "dependencies": {
         "core": "*"
     },
     "files": [
-        "pbShield.ts"
+        "maqueen.ts",
+        "enums.d.ts",
+        "maqueenIR.cpp",
+        "ReceiverIR.cpp",
+        "ReceiverIR.h",
+        "RemoteIR.h",
+        "TransmitterIR.cpp",
+        "TransmitterIR.h",
+        "_locales/zh/maqueen-strings.json"
     ],
     "testFiles": [
         "tests.ts"
     ],
-    "public": true,
-    "extension": {
-        "namespace": "pbShield",
-        "label": "Animation Editor",
-        "localUrl": "http://127.0.0.1:8080/index.html?d"
-    }
+    "public": true
 }
