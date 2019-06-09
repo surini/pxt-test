@@ -56,30 +56,22 @@ namespace pbShield{
   
 
     
-    //% blockId=ultrasonic_sensor block="sensor unit|%unit"
+    //% blockId=ultrasonic_sensor block="ultrasonic sensor distance"
     //% weight=95
-    export function sensor(unit: PingUnit, maxCmDistance = 500): number {
+    export function sensor(): number {
         // send pulse
-        pins.setPull(DigitalPin.P1, PinPullMode.PullNone);
-        pins.digitalWritePin(DigitalPin.P1, 0);
-        control.waitMicros(2);
-        pins.digitalWritePin(DigitalPin.P1, 1);
-        control.waitMicros(10);
-        pins.digitalWritePin(DigitalPin.P1, 0);
-        pins.setPull(DigitalPin.P2, PinPullMode.PullUp);
+        pins.setPull(DigitalPin.P1, PinPullMode.PullNone)
+        pins.digitalWritePin(DigitalPin.P9, 0)
+        control.waitMicros(2)
+        pins.digitalWritePin(DigitalPin.P9, 1)
+        control.waitMicros(10)
+        pins.digitalWritePin(DigitalPin.P9, 0)
+        pins.setPull(DigitalPin.P10, PinPullMode.PullUp)
         
         
 
         // read pulse
-        let d = pins.pulseIn(DigitalPin.P2, PulseValue.High, maxCmDistance * 42);
-        console.log("Distance: " + d/42);
-        
-        basic.pause(50)
-
-        switch (unit) {
-            case PingUnit.Centimeters: return d / 42;
-            default: return d ;
-        }
+        return pins.pulseIn(DigitalPin.P10, PulseValue.High, 21000) / 42;
     }
     
     //% weight=90
@@ -87,12 +79,16 @@ namespace pbShield{
     //% speed.min=0 speed.max=255
     //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=2
     export function MotorRun(direction:Dir, speed: number): void {
-        let buf = pins.createBuffer(3);
-        
-        buf[0]=0x00;
-        buf[1]=direction;
-        buf[2]=speed;
-        pins.i2cWriteBuffer(0x10, buf);
+
+        pins.digitalWritePin(DigitalPin.P2, direction)
+        pins.digitalWritePin(DigitalPin.P4, direction)
+        speed = speed > 245 ? 245:speed
+        if (direction == Dir.FORWARD)
+        {
+            speed = 255-speed
+        }
+        pins.analogWritePin(DigitalPin.P5, speed)
+        pins.analogWritePin(DigitalPin.P6, speed)
     }
 
     
@@ -101,61 +97,81 @@ namespace pbShield{
     //% speed.min=-255 speed.max=255
     //% index.fieldEditor="gridpicker" index.fieldOptions.columns=2
     export function MotorSet(index: pos, speed: number): void {
-        let buf = pins.createBuffer(3);
-        if (index==0){
-            buf[0]=0x00;
+       
+        if (index == pos.LEFT)
+        {
+            if (speed >= 0) {
+                pins.digitalWritePin(DigitalPin.P2, state.Off)
+                pins.analogWritePin(DigitalPin.P5, speed)
+            }
+            else
+            {
+                pins.digitalWritePin(DigitalPin.P2, state.On)
+                pins.analogWritePin(DigitalPin.P5, 255-speed)
+            }
+            
         }
-        if (index==1){
-            buf[0]=0x02;
+        else
+        {
+            if (speed >= 0) {
+                pins.digitalWritePin(DigitalPin.P4, state.Off)
+                pins.analogWritePin(DigitalPin.P6, 255)
+            }
+            else
+            {
+                pins.digitalWritePin(DigitalPin.P4, state.On)
+                pins.analogWritePin(DigitalPin.P6, 255-speed)
+            }
+            
         }
+
         
-        buf[2]=speed;
-        pins.i2cWriteBuffer(0x10, buf);
     }
 
     //% weight=80
     //% blockId=motor_MotorTurn block="Turn|%side"
     //% side.fieldEditor="gridpicker" side.fieldOptions.columns=2
     export function MotorTurn(side: pos): void {
-        let buf = pins.createBuffer(3);
-        
-        buf[0]=0x00;
-        buf[1]=side;
-        pins.i2cWriteBuffer(0x10, buf);
+        pins.digitalWritePin(DigitalPin.P2, state.Off)
+        pins.digitalWritePin(DigitalPin.P4, state.Off)
+        pins.digitalWritePin(DigitalPin.P5, state.Off)
+        pins.digitalWritePin(DigitalPin.P6, state.Off)
+    
+        if (index == pos.LEFT)
+        {
+            pins.analogWritePin(DigitalPin.P5, 255)
+        }
+        else
+        {
+            pins.analogWritePin(DigitalPin.P6, 255)
+        }
+
+        basic.pause(200)
+        pins.digitalWritePin(DigitalPin.P5, state.Off)
+        pins.digitalWritePin(DigitalPin.P6, state.Off)
     }
     
     //% weight=10
     //% blockId=motor_stopMoving block="Stop Moving"
     export function stopMoving(): void {
-        let buf = pins.createBuffer(3);
-        buf[0]=0x00;
-        buf[1]=0;
-        buf[2]=0;
-        pins.i2cWriteBuffer(0x10, buf);
-        buf[0]=0x02;
-        pins.i2cWriteBuffer(0x10, buf);
+        pins.digitalWritePin(DigitalPin.P2, state.Off) 
+        pins.digitalWritePin(DigitalPin.P5, state.Off) 
+        pins.digitalWritePin(DigitalPin.P4, state.Off) 
+        pins.digitalWritePin(DigitalPin.P6, state.Off) 
     }
     
     //% weight=20
-    //% blockId=read_Patrol block="Read Patrol|%patrol"
-    //% patrol.fieldEditor="gridpicker" patrol.fieldOptions.columns=2 
-    export function readPatrol(patrol:Patrol):number{
-        if(patrol==Patrol.PatrolLeft){
-            return pins.digitalReadPin(DigitalPin.P13)
-        }else if(patrol==Patrol.PatrolRight){
-            return pins.digitalReadPin(DigitalPin.P14)
-        }else{
-            return -1
-        } 
+    //% blockId=readButton block="On Board Button" 
+    export function readButton():number{
+        return pins.digitalReadPin(DigitalPin.P3)
     }
     
     //% weight=20
-    //% blockId=writeLED block="turn on board LED|%ledswitch"
+    //% blockId=setLED block="Switch on board LED|%ledswitch"
     //% ledswitch.fieldEditor="gridpicker" ledswitch.fieldOptions.columns=2
-    export function writeLED(ledswitch: state): void{
+    export function setLED(ledswitch: state): void{
         pins.digitalWritePin(DigitalPin.P13, ledswitch) 
     }
     
-
   
 }
