@@ -35,8 +35,8 @@ namespace pbShield{
     }
 
     
-    //% blockId=ultrasonic_sensor block="ultrasonic sensor |%port| distance"
     //% weight=95
+    //% blockId=ultrasonic_sensor block="ultrasonic sensor|%port|distance"
     //% port.fieldEditor="gridpicker" direction.fieldOptions.columns=2
     export function sensor(port: ports): number {
         var pin1 = 0
