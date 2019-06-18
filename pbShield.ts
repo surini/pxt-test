@@ -23,23 +23,59 @@ namespace pbShield{
         Off=0x00
     }
 
+    export enum ports{
+        //% blockId="Port1" block="Port 1"
+        Port1 = 0x01,
+         //% blockId="Port2" block="Port 2"
+        Port2 = 0x02,
+          //% blockId="Port3" block="Port 3"
+        Port3 = 0x03,
+         //% blockId="Port4" block="Port 4"
+        Port4=0x04
+    }
+
     
-    //% blockId=ultrasonic_sensor block="ultrasonic sensor distance"
+    //% blockId=ultrasonic_sensor block="ultrasonic sensor |%port| distance"
     //% weight=95
-    export function sensor(): number {
+    //% port.fieldEditor="gridpicker" direction.fieldOptions.columns=2
+    export function sensor(port: ports): number {
+        var pin1 = 0
+        var pin2 = 0
+        switch (port)
+        {
+            case ports.Port1:
+                pin1 = DigitalPin.P10
+                pin2 = DigitalPin.P14
+                break
+            
+            case  ports.Port2:
+                pin1 = DigitalPin.P15
+                pin2 = DigitalPin.P16
+                break
+            
+            case  ports.Port3:
+                pin1 = DigitalPin.P0
+                pin2 = DigitalPin.P1
+                break
+            
+            case  ports.Port4:
+                pin1 = DigitalPin.P2
+                pin2 = DigitalPin.P4
+                break
+        }
         // send pulse
-        pins.setPull(DigitalPin.P1, PinPullMode.PullNone)
-        pins.digitalWritePin(DigitalPin.P9, 0)
+        pins.setPull(pin2, PinPullMode.PullNone)
+        pins.digitalWritePin(pin1, 0)
         control.waitMicros(2)
-        pins.digitalWritePin(DigitalPin.P9, 1)
+        pins.digitalWritePin(pin1, 1)
         control.waitMicros(10)
-        pins.digitalWritePin(DigitalPin.P9, 0)
-        pins.setPull(DigitalPin.P10, PinPullMode.PullUp)
+        pins.digitalWritePin(pin1, 0)
+        pins.setPull(pin2, PinPullMode.PullUp)
         
         
 
         // read pulse
-        return pins.pulseIn(DigitalPin.P10, PulseValue.High, 21000) / 42
+        return pins.pulseIn(pin2, PulseValue.High, 21000) / 42
     }
     
     //% weight=90
@@ -123,7 +159,7 @@ namespace pbShield{
         pins.digitalWritePin(DigitalPin.P7, state.Off)
         pins.digitalWritePin(DigitalPin.P8, state.On)
         pins.digitalWritePin(DigitalPin.P9, state.On)
-    
+        basic.pause(500)
         if (side == pos.LEFT)
         {
             pins.analogWritePin(AnalogPin.P6, 1024)
@@ -135,7 +171,7 @@ namespace pbShield{
             pins.analogWritePin(AnalogPin.P8, 1)
         }
 
-        basic.pause(200)
+        basic.pause(1000)
         stopMoving()
     }
     
