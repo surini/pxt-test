@@ -195,7 +195,7 @@ namespace pbShield{
     //% weight=20
     //% blockId=pb_GetPin block="%port|%pin" 
     //% port.fieldEditor="gridpicker" direction.fieldOptions.columns=2
-    //% port.fieldEditor="gridpicker" direction.fieldOptions.columns=2
+    //% pin.fieldEditor="gridpicker" direction.fieldOptions.columns=2
     export function GetPin(port: pbPORTS, pin: pbPINS): number {
         
         let pin1 = 0;
@@ -240,6 +240,15 @@ namespace pbShield{
         {
             return pin2;
         }
+    }
+
+    //% weight=20
+    //% blockId=pb_SetServo block="Set Servo|%port|%pin|angle||%angle"
+    //% angle.min=0 speed.max=255
+    //% port.fieldEditor="gridpicker" direction.fieldOptions.columns=2
+    //% pin.fieldEditor="gridpicker" direction.fieldOptions.columns=2
+    export function SetServo(port: pbPORTS, pin: pbPINS, angle: number): void{
+        pins.servoWritePin(GetPin(port,pin), angle);
     }
     
   
