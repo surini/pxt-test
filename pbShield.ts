@@ -36,46 +36,59 @@ namespace pbShield{
 
     
     //% weight=95
-    //% blockId=ultrasonic_sensor block="ultrasonic sensor|%port|distance"
+    //% blockId=pb_ultrasonic_read block="ultrasonic sensor|%port|distance"
     //% port.fieldEditor="gridpicker" direction.fieldOptions.columns=2
     export function sensor(port: ports): number {
-        var pin1 = 0
-        var pin2 = 0
+        let pin1 = 0
+        let pin2 = 0
         switch (port)
         {
             case ports.Port1:
-                pin1 = DigitalPin.P10
-                pin2 = DigitalPin.P14
-                break
+                {
+                    pin1 = DigitalPin.P10;
+                    pin2 = DigitalPin.P14;
+                    break;
+                }
             
-            case  ports.Port2:
-                pin1 = DigitalPin.P15
-                pin2 = DigitalPin.P16
-                break
+            case ports.Port2:
+                {
+
+                
+                    pin1 = DigitalPin.P15;
+                    pin2 = DigitalPin.P16;
+                    break;
+                }
             
-            case  ports.Port3:
-                pin1 = DigitalPin.P0
-                pin2 = DigitalPin.P1
-                break
+            case ports.Port3:
+                {
+                    pin1 = DigitalPin.P0;
+                    pin2 = DigitalPin.P1;
+                    break;
+                }
             
-            case  ports.Port4:
-                pin1 = DigitalPin.P2
-                pin2 = DigitalPin.P4
-                break
+            default:
+            case ports.Port4:
+                {
+                    pin1 = DigitalPin.P2;
+                    pin2 = DigitalPin.P4;
+                    break;
+                }
         }
         // send pulse
-        pins.setPull(pin2, PinPullMode.PullNone)
-        pins.digitalWritePin(pin1, 0)
-        control.waitMicros(2)
-        pins.digitalWritePin(pin1, 1)
-        control.waitMicros(10)
-        pins.digitalWritePin(pin1, 0)
-        pins.setPull(pin2, PinPullMode.PullUp)
-        
+        pins.setPull(pin2, PinPullMode.PullNone);
+        pins.digitalWritePin(pin1, 0);
+        control.waitMicros(2);
+        pins.digitalWritePin(pin1, 1);
+        control.waitMicros(10);
+        pins.digitalWritePin(pin1, 0);
+        pins.setPull(pin2, PinPullMode.PullUp);
         
 
         // read pulse
-        return pins.pulseIn(pin2, PulseValue.High, 21000) / 42
+        let d = pins.pulseIn(pin2, PulseValue.High, 21000) / 42;
+        console.log("Distance: " + d);
+        
+        return d;
     }
     
     //% weight=90
