@@ -258,16 +258,16 @@ namespace pbShield{
     //% duration.min=0 duration.max=255
     export function PlayTone(frequency: number, duration: number): void {
 
-        let period = 1000 / frequency;
-        period = period > 0 ? period : 3;
+        let period = 1000000 / frequency;
+        period = period > 0 ? period : 3000;
         let pulse = period / 2;
 
-        for (let i = 0; i < duration ; i += period)
+        for (let i = 0; i < duration * 1000; i += period)
         {
             pins.digitalWritePin(DigitalPin.P12, 1);
-            basic.pause(pulse);
+            control.waitMicros(pulse);
             pins.digitalWritePin(DigitalPin.P12, 0);
-            basic.pause(pulse);
+            control.waitMicros(pulse);
         }
     }
     
