@@ -34,13 +34,6 @@ namespace pbShield{
         Port4=0x04
     }
 
-    export enum pins{
-        //% blockId="Pin1" block="Pin 1"
-        Pin1 = 0x01,
-         //% blockId="Pin2" block="Pin 2"
-        Pin2 = 0x02
-    }
-
     
     //% weight=95
     //% blockId=pb_read_ultrasonic_sensor block="ultrasonic sensor|%port|distance"
@@ -218,14 +211,6 @@ namespace pbShield{
     //% weight=20
     //% blockId=pb_ReadLight block="On-Board Light Level" 
     export function ReadLight():number{
-        return pins.analogReadPin(AnalogPin.P3);
-    }
-
-
-    //% weight=20
-    //% blockId=pb_ReadLight block="Port|%port|Pin|%pin" 
-    //% port.fieldEditor="gridpicker" direction.fieldOptions.columns=2
-    export function ReadLight(port: ports, pin:pins):number{
         return pins.analogReadPin(AnalogPin.P3);
     }
     
