@@ -243,12 +243,32 @@ namespace pbShield{
     }
 
     //% weight=20
-    //% blockId=pb_SetServo block="Set Servo|%port|%pin|angle||%angle"
-    //% angle.min=0 speed.max=255
+    //% blockId=pb_SetServo block="Set Servo|%port|%pin|angle|%angle"
+    //% angle.min=0 angle.max=255
     //% port.fieldEditor="gridpicker" direction.fieldOptions.columns=2
     //% pin.fieldEditor="gridpicker" direction.fieldOptions.columns=2
     export function SetServo(port: pbPORTS, pin: pbPINS, angle: number): void{
         pins.servoWritePin(GetPin(port,pin), angle);
+    }
+
+
+    //% weight=20
+    //% blockId=pb_PlayTone block="Play tone on note|%frequency|beat|%pin"
+    //% frequency.min=0 frequency.max=255
+    //% duration.min=0 duration.max=255
+    export function PlayTone(frequency: number, duration: number): void {
+
+        let period = 1000000 / frequency;
+        period = period > 0 ? period : 3000;
+        let pulse = period / 2;
+
+        for (let i = 0; i < duration * 1000; i += period)
+        {
+            pins.digitalWritePin(DigitalPin.P12, 1);
+            basic.pause(pulse);
+            pins.digitalWritePin(DigitalPin.P12, 0);
+            basic.pause(pulse);
+        }
     }
     
   
