@@ -42,8 +42,8 @@ namespace pbShield{
     }
 
     
-    //% weight=95
-    //% blockId=pb_ReadUltrasonicSensor block="ultrasonic sensor|%port|distance"
+    //% weight=75
+    //% blockId=pb_ReadUltrasonicSensor block="Distance using ultrasonic sensor from|%port"
     //% port.fieldEditor="gridpicker" direction.fieldOptions.columns=2
     export function ReadUltrasonicSensor(port: pbPORTS): number {
         let pin1 = DigitalPin.P15
@@ -66,7 +66,7 @@ namespace pbShield{
         return value;
     }
     
-    //% weight=90
+    //% weight=95
     //% blockId=motor_MotorRun block="Run|%direction|with power|%speed"
     //% speed.min=0 speed.max=255
     //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=2
@@ -94,7 +94,7 @@ namespace pbShield{
     }
 
     
-    //% weight=85
+    //% weight=90
     //% blockId=pb_MotorSet block="Set|%index|motor's power|%speed"
     //% speed.min=-255 speed.max=255
     //% index.fieldEditor="gridpicker" index.fieldOptions.columns=2
@@ -138,32 +138,8 @@ namespace pbShield{
 
         
     }
-
-    //% weight=80
-    //% blockId=pb_MotorTurn block="Turn|%side"
-    //% side.fieldEditor="gridpicker" side.fieldOptions.columns=2
-    export function MotorTurn(side: pbPOSTION): void {
-        pins.digitalWritePin(DigitalPin.P6, pbSTATE.OFF);
-        pins.digitalWritePin(DigitalPin.P7, pbSTATE.OFF);
-        pins.digitalWritePin(DigitalPin.P8, pbSTATE.ON);
-        pins.digitalWritePin(DigitalPin.P9, pbSTATE.ON);
-        basic.pause(500);
-        if (side == pbPOSTION.LEFT)
-        {
-            pins.analogWritePin(AnalogPin.P6, 1024);
-            pins.analogWritePin(AnalogPin.P7, 1);
-        }
-        else
-        {
-            pins.analogWritePin(AnalogPin.P9, 1024);
-            pins.analogWritePin(AnalogPin.P8, 1);
-        }
-
-        basic.pause(1000);
-        StopMoving();
-    }
     
-    //% weight=10
+    //% weight=88
     //% blockId=pb_StopMoving block="Stop Moving"
     export function StopMoving(): void {
         pins.digitalWritePin(DigitalPin.P6, pbSTATE.OFF);
@@ -172,27 +148,27 @@ namespace pbShield{
         pins.digitalWritePin(DigitalPin.P9, pbSTATE.ON);
     }
     
-    //% weight=20
+    //% weight=79
     //% blockId=pb_ReadButton block="Is On-Board Button Pressed" 
     export function ReadButton():number{
         return pins.digitalReadPin(DigitalPin.P3);
     }
     
-    //% weight=20
+    //% weight=83
     //% blockId=pb_SetLED block="Switch on-board LED|%ledswitch"
     //% ledswitch.fieldEditor="gridpicker" ledswitch.fieldOptions.columns=2
     export function SetLED(ledswitch: pbSTATE): void{
         pins.digitalWritePin(DigitalPin.P13, ledswitch);
     }
 
-    //% weight=20
+    //% weight=77
     //% blockId=pb_ReadLight block="On-Board Light Level" 
     export function ReadLight():number{
         return pins.analogReadPin(AnalogPin.P3);
     }
 
 
-    //% weight=20
+    //% weight=10
     //% blockId=pb_GetPin block="%port|%pin" 
     //% port.fieldEditor="gridpicker" direction.fieldOptions.columns=2
     //% pin.fieldEditor="gridpicker" direction.fieldOptions.columns=2
@@ -242,7 +218,7 @@ namespace pbShield{
         }
     }
 
-    //% weight=20
+    //% weight=80
     //% blockId=pb_SetServo block="Set Servo|%port|%pin|angle|%angle"
     //% angle.min=0 angle.max=180
     //% port.fieldEditor="gridpicker" direction.fieldOptions.columns=2
@@ -252,9 +228,9 @@ namespace pbShield{
     }
 
 
-    //% weight=20
+    //% weight=85
     //% blockId=pb_PlayTone block="Play tone on note|%frequency|beat|%pin"
-    //% frequency.min=0 frequency.max=255
+    //% frequency.min=0 frequency.max=390
     //% duration.min=0 duration.max=255
     export function PlayTone(frequency: number, duration: number): void {
 
