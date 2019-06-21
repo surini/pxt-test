@@ -41,19 +41,10 @@ namespace pbShield{
     export function sensor(port: ports): number {
         let pin1 = 0
         let pin2 = 0
-        switch (port)
-        {
-            case ports.Port1:
-                {
-                    pin1 = DigitalPin.P10;
-                    pin2 = DigitalPin.P14;
-                    break;
-                }
+        switch (port) {
             
             case ports.Port2:
                 {
-
-                
                     pin1 = DigitalPin.P15;
                     pin2 = DigitalPin.P16;
                     break;
@@ -65,12 +56,19 @@ namespace pbShield{
                     pin2 = DigitalPin.P1;
                     break;
                 }
-            
-            default:
+        
             case ports.Port4:
                 {
                     pin1 = DigitalPin.P2;
                     pin2 = DigitalPin.P4;
+                    break;
+                }
+
+            default:
+            case ports.Port1:
+                {
+                    pin1 = DigitalPin.P10;
+                    pin2 = DigitalPin.P14;
                     break;
                 }
         }
@@ -85,14 +83,14 @@ namespace pbShield{
         
 
         // read pulse
-        let d = pins.pulseIn(pin2, PulseValue.High, 21000) / 42;
-        console.log("Distance: " + d);
+        let value = pins.pulseIn(pin2, PulseValue.High, 21000) / 42;
+        console.log("Distance: " + value);
         
-        return d;
+        return value;
     }
     
     //% weight=90
-    //% blockId=motor_MotorRun block="Run|%direction|with power|%speed"
+    //% blockId=motor_MotorRun block="%direction|with power|%speed"
     //% speed.min=0 speed.max=255
     //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=2
     export function MotorRun(direction:Dir, speed: number): void {
