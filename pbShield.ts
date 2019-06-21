@@ -34,11 +34,11 @@ namespace pbShield{
         Port4=0x04
     }
 
-    export enum pins{
-        //% blockId="Pin1" block="Pin 1"
-        Pin1 = 0x01,
-         //% blockId="Pin2" block="Pin 2"
-        Pin2 = 0x02
+    export enum PINS{
+        //% blockId="PIN1" block="Pin 1"
+        PIN1 = 0x01,
+         //% blockId="PIN2" block="Pin 2"
+        PIN2 = 0x02
     }
 
     
@@ -184,63 +184,3 @@ namespace pbShield{
     export function SetLED(ledswitch: state): void{
         pins.digitalWritePin(DigitalPin.P13, ledswitch);
     }
-
-    //% weight=20
-    //% blockId=pb_ReadLight block="On-Board Light Level" 
-    export function ReadLight():number{
-        return pins.analogReadPin(AnalogPin.P3);
-    }
-
-
-    //% weight=20
-    //% blockId=pb_GetPin block="Port|%port|Pin|%pin" 
-    //% port.fieldEditor="gridpicker" direction.fieldOptions.columns=2
-    //% port.fieldEditor="gridpicker" direction.fieldOptions.columns=2
-    export function GetPin(port: ports, pin: pins): number {
-        
-        let pin1 = 0;
-        let pin2 = 0;
-        switch (port) {
-            
-            case ports.Port2:
-                {
-                    pin1 = DigitalPin.P15;
-                    pin2 = DigitalPin.P16;
-                    break;
-                }
-            
-            case ports.Port3:
-                {
-                    pin1 = DigitalPin.P0;
-                    pin2 = DigitalPin.P1;
-                    break;
-                }
-        
-            case ports.Port4:
-                {
-                    pin1 = DigitalPin.P2;
-                    pin2 = DigitalPin.P4;
-                    break;
-                }
-
-            default:
-            case ports.Port1:
-                {
-                    pin1 = DigitalPin.P10;
-                    pin2 = DigitalPin.P14;
-                    break;
-                }
-        }
-
-        if (pin == pins.Pin1)
-        {
-            return pin1;
-        }
-        else
-        {
-            return pin2;
-        }
-    }
-    
-  
-}
