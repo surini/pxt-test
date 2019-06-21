@@ -43,11 +43,11 @@ namespace pbShield{
 
     
     //% weight=95
-    //% blockId=pb_read_ultrasonic_sensor block="ultrasonic sensor|%port|distance"
+    //% blockId=pb_ReadUltrasonicSensor block="ultrasonic sensor|%port|distance"
     //% port.fieldEditor="gridpicker" direction.fieldOptions.columns=2
     export function ReadUltrasonicSensor(port: ports): number {
-        let pin1 = GetPin(port, pins.Pin1);
-        let pin2 = GetPin(port, pins.Pin2);
+        let pin1 = DigitalPin.P15
+        let pin2 = DigitalPin.P16
        
         // send pulse
         pins.setPull(pin2, PinPullMode.PullNone);
@@ -67,7 +67,7 @@ namespace pbShield{
     }
     
     //% weight=90
-    //% blockId=motor_MotorRun block="%direction|with power|%speed"
+    //% blockId=motor_MotorRun block="Run|%direction|with power|%speed"
     //% speed.min=0 speed.max=255
     //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=2
     export function MotorRun(direction:Dir, speed: number): void {
