@@ -34,13 +34,172 @@ namespace pbShield{
         Port4=0x04
     }
 
+    export enum pins{
+        //% blockId="Pin1" block="Pin 1"
+        Pin1 = 0x01,
+         //% blockId="Pin2" block="Pin 2"
+        Pin2 = 0x02
+    }
+
     
     //% weight=95
-    //% blockId=pb_ultrasonic_read block="ultrasonic sensor|%port|distance"
+    //% blockId=pb_read_ultrasonic_sensor block="ultrasonic sensor|%port|distance"
     //% port.fieldEditor="gridpicker" direction.fieldOptions.columns=2
-    export function sensor(port: ports): number {
-        let pin1 = 0
-        let pin2 = 0
+    export function ReadUltrasonicSensor(port: ports): number {
+        let pin1 = GetPin(port, pins.Pin1);
+        let pin2 = GetPin(port, pins.Pin2);
+       
+        // send pulse
+        pins.setPull(pin2, PinPullMode.PullNone);
+        pins.digitalWritePin(pin1, 0);
+        control.waitMicros(2);
+        pins.digitalWritePin(pin1, 1);
+        control.waitMicros(10);
+        pins.digitalWritePin(pin1, 0);
+        pins.setPull(pin2, PinPullMode.PullUp);
+        
+
+        // read pulse
+        let value = pins.pulseIn(pin2, PulseValue.High, 21000) / 42;
+        console.log("Distance: " + value);
+        
+        return value;
+    }
+    
+    //% weight=90
+    //% blockId=motor_MotorRun block="%direction|with power|%speed"
+    //% speed.min=0 speed.max=255
+    //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=2
+    export function MotorRun(direction:Dir, speed: number): void {
+
+        pins.digitalWritePin(DigitalPin.P6, direction);
+        pins.digitalWritePin(DigitalPin.P8, direction);
+        speed *= 4;
+        if (direction == Dir.FORWARD)
+        {
+            pins.analogWritePin(AnalogPin.P6, 1023);
+            pins.analogWritePin(AnalogPin.P9, 1023);
+            speed = 1023 - speed;
+            pins.analogWritePin(AnalogPin.P7, speed);
+            pins.analogWritePin(AnalogPin.P8, speed);
+        }
+        else
+        {
+            pins.analogWritePin(AnalogPin.P7, 1023);
+            pins.analogWritePin(AnalogPin.P8, 1023);
+            speed = 1023 - speed;
+            pins.analogWritePin(AnalogPin.P6, speed);
+            pins.analogWritePin(AnalogPin.P9, speed);
+        }
+    }
+
+    
+    //% weight=85
+    //% blockId=pb_MotorSet block="Set|%index|motor's power|%speed"
+    //% speed.min=-255 speed.max=255
+    //% index.fieldEditor="gridpicker" index.fieldOptions.columns=2
+    export function pb_MotorSet(index: pos, speed: number): void {
+       
+        StopMoving();
+        if (index == pos.LEFT)
+        {
+            if (speed >= 0) {
+                pins.analogWritePin(AnalogPin.P6, 1023);
+                speed *= 4;
+                speed = 1023-speed;
+                pins.analogWritePin(AnalogPin.P7, speed);
+            }
+            else
+            {
+                pins.analogWritePin(AnalogPin.P7, 1023);
+                speed *= 4;
+                speed = 1023-speed;
+                pins.analogWritePin(AnalogPin.P6, speed);
+            }
+            
+        }
+        else
+        {
+            if (speed >= 0) {
+                pins.analogWritePin(AnalogPin.P9, 1023);
+                speed *= 4;
+                speed = 1023-speed;
+                pins.analogWritePin(AnalogPin.P8, speed);
+            }
+            else
+            {
+                pins.analogWritePin(AnalogPin.P8, 1023)
+                speed *= 4;
+                speed = 1023-speed;
+                pins.analogWritePin(AnalogPin.P9, speed)
+            }
+            
+        }
+
+        
+    }
+
+    //% weight=80
+    //% blockId=pb_MotorTurn block="Turn|%side"
+    //% side.fieldEditor="gridpicker" side.fieldOptions.columns=2
+    export function MotorTurn(side: pos): void {
+        pins.digitalWritePin(DigitalPin.P6, state.Off);
+        pins.digitalWritePin(DigitalPin.P7, state.Off);
+        pins.digitalWritePin(DigitalPin.P8, state.On);
+        pins.digitalWritePin(DigitalPin.P9, state.On);
+        basic.pause(500);
+        if (side == pos.LEFT)
+        {
+            pins.analogWritePin(AnalogPin.P6, 1024);
+            pins.analogWritePin(AnalogPin.P7, 1);
+        }
+        else
+        {
+            pins.analogWritePin(AnalogPin.P9, 1024);
+            pins.analogWritePin(AnalogPin.P8, 1);
+        }
+
+        basic.pause(1000);
+        StopMoving();
+    }
+    
+    //% weight=10
+    //% blockId=pb_StopMoving block="Stop Moving"
+    export function StopMoving(): void {
+        pins.digitalWritePin(DigitalPin.P6, state.Off);
+        pins.digitalWritePin(DigitalPin.P7, state.Off);
+        pins.digitalWritePin(DigitalPin.P8, state.On);
+        pins.digitalWritePin(DigitalPin.P9, state.On);
+    }
+    
+    //% weight=20
+    //% blockId=pb_ReadButton block="Is On-Board Button Pressed" 
+    export function ReadButton():number{
+        return pins.digitalReadPin(DigitalPin.P3);
+    }
+    
+    //% weight=20
+    //% blockId=pb_SetLED block="Switch on-board LED|%ledswitch"
+    //% ledswitch.fieldEditor="gridpicker" ledswitch.fieldOptions.columns=2
+    export function SetLED(ledswitch: state): void{
+        pins.digitalWritePin(DigitalPin.P13, ledswitch);
+    }
+
+    //% weight=20
+    //% blockId=pb_ReadLight block="On-Board Light Level" 
+    export function ReadLight():number{
+        return pins.analogReadPin(AnalogPin.P3);
+    }
+
+
+    //% weight=20
+    //% blockId=pb_GetPin block="Port|%port|Pin|%pin" 
+    //% port.fieldEditor="gridpicker" direction.fieldOptions.columns=2
+    //% port.fieldEditor="gridpicker" direction.fieldOptions.columns=2
+    export function GetPin(port: ports, pin: pins): number {
+        
+        let pin1 = 0;
+        let pin2 = 0;
         switch (port) {
             
             case ports.Port2:
@@ -72,140 +231,15 @@ namespace pbShield{
                     break;
                 }
         }
-        // send pulse
-        pins.setPull(pin2, PinPullMode.PullNone);
-        pins.digitalWritePin(pin1, 0);
-        control.waitMicros(2);
-        pins.digitalWritePin(pin1, 1);
-        control.waitMicros(10);
-        pins.digitalWritePin(pin1, 0);
-        pins.setPull(pin2, PinPullMode.PullUp);
-        
 
-        // read pulse
-        let value = pins.pulseIn(pin2, PulseValue.High, 21000) / 42;
-        console.log("Distance: " + value);
-        
-        return value;
-    }
-    
-    //% weight=90
-    //% blockId=motor_MotorRun block="%direction|with power|%speed"
-    //% speed.min=0 speed.max=255
-    //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=2
-    export function MotorRun(direction:Dir, speed: number): void {
-
-        pins.digitalWritePin(DigitalPin.P6, direction)
-        pins.digitalWritePin(DigitalPin.P8, direction)
-        speed *= 4
-        if (direction == Dir.FORWARD)
+        if (pin == pins.Pin1)
         {
-            pins.analogWritePin(AnalogPin.P6, 1023)
-            pins.analogWritePin(AnalogPin.P9, 1023)
-            speed = 1023-speed
-            pins.analogWritePin(AnalogPin.P7, speed)
-            pins.analogWritePin(AnalogPin.P8, speed)
+            return pin1;
         }
         else
         {
-            pins.analogWritePin(AnalogPin.P7, 1023)
-            pins.analogWritePin(AnalogPin.P8, 1023)
-            speed = 1023-speed
-            pins.analogWritePin(AnalogPin.P6, speed)
-            pins.analogWritePin(AnalogPin.P9, speed)
+            return pin2;
         }
-    }
-
-    
-    //% weight=85
-    //% blockId=motor_MotorSet block="Set|%index|motor's power|%speed"
-    //% speed.min=-255 speed.max=255
-    //% index.fieldEditor="gridpicker" index.fieldOptions.columns=2
-    export function MotorSet(index: pos, speed: number): void {
-       
-        stopMoving()
-        if (index == pos.LEFT)
-        {
-            if (speed >= 0) {
-                pins.analogWritePin(AnalogPin.P6, 1023)
-                speed *= 4;
-                speed = 1023-speed;
-                pins.analogWritePin(AnalogPin.P7, speed)
-            }
-            else
-            {
-                pins.analogWritePin(AnalogPin.P7, 1023)
-                speed *= 4;
-                speed = 1023-speed;
-                pins.analogWritePin(AnalogPin.P6, speed)
-            }
-            
-        }
-        else
-        {
-            if (speed >= 0) {
-                pins.analogWritePin(AnalogPin.P9, 1023)
-                speed *= 4;
-                speed = 1023-speed;
-                pins.analogWritePin(AnalogPin.P8, speed)
-            }
-            else
-            {
-                pins.analogWritePin(AnalogPin.P8, 1023)
-                speed *= 4;
-                speed = 1023-speed;
-                pins.analogWritePin(AnalogPin.P9, speed)
-            }
-            
-        }
-
-        
-    }
-
-    //% weight=80
-    //% blockId=motor_MotorTurn block="Turn|%side"
-    //% side.fieldEditor="gridpicker" side.fieldOptions.columns=2
-    export function MotorTurn(side: pos): void {
-        pins.digitalWritePin(DigitalPin.P6, state.Off)
-        pins.digitalWritePin(DigitalPin.P7, state.Off)
-        pins.digitalWritePin(DigitalPin.P8, state.On)
-        pins.digitalWritePin(DigitalPin.P9, state.On)
-        basic.pause(500)
-        if (side == pos.LEFT)
-        {
-            pins.analogWritePin(AnalogPin.P6, 1024)
-            pins.analogWritePin(AnalogPin.P7, 1)
-        }
-        else
-        {
-            pins.analogWritePin(AnalogPin.P9, 1024)
-            pins.analogWritePin(AnalogPin.P8, 1)
-        }
-
-        basic.pause(1000)
-        stopMoving()
-    }
-    
-    //% weight=10
-    //% blockId=motor_stopMoving block="Stop Moving"
-    export function stopMoving(): void {
-        pins.digitalWritePin(DigitalPin.P6, state.Off) 
-        pins.digitalWritePin(DigitalPin.P7, state.Off) 
-        pins.digitalWritePin(DigitalPin.P8, state.On) 
-        pins.digitalWritePin(DigitalPin.P9, state.On) 
-    }
-    
-    //% weight=20
-    //% blockId=readButton block="On Board Button" 
-    export function readButton():number{
-        return pins.digitalReadPin(DigitalPin.P3)
-    }
-    
-    //% weight=20
-    //% blockId=setLED block="Switch on board LED|%ledswitch"
-    //% ledswitch.fieldEditor="gridpicker" ledswitch.fieldOptions.columns=2
-    export function setLED(ledswitch: state): void{
-        pins.digitalWritePin(DigitalPin.P13, ledswitch) 
     }
     
   
